@@ -7,6 +7,7 @@ from decimal import Decimal
 from web3 import Web3
 import pandas as pd
 
+
 # dYdX dependencies
 from dydx3 import Client
 from dydx3.constants import *
