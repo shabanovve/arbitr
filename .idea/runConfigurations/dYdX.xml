@@ -4,12 +4,12 @@
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
-      <env name="API_KEY" value="0" />
-      <env name="API_SECRET" value="0" />
-      <env name="ETHEREUM_ADDRESS" value="0" />
-      <env name="PASS_PHRASE" value="0" />
+      <env name="API_KEY" value="43609d30-67a1-15c7-4ccc-4baad244d294" />
+      <env name="API_SECRET" value="iCbtYg2lgHCzV-vuqkwmuwaypWakdAxf8qQJijy_" />
+      <env name="ETHEREUM_ADDRESS" value="0x926FFD8638A63Bc752F9b24263D0356BFB7723ee" />
+      <env name="PASS_PHRASE" value="qKRYEoAIl32uO9I8aQ1I" />
       <env name="PYTHONUNBUFFERED" value="1" />
-      <env name="STARK_PRIVATE_KEY" value="0" />
+      <env name="STARK_PRIVATE_KEY" value="053b0a055fbd7f227569b4d5d2b1cf2fe88990268be4de3a949a0eba8a24ca23" />
     </envs>
     <option name="SDK_HOME" value="" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
