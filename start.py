@@ -6,6 +6,8 @@ from src.dYdX import run_script
 
 
 def main():
+    if not os.path.exists('./share'):
+        raise Exception('share does not exist')
 
     ws = WebSocket(testnet=False, channel_type="linear", )
     ws.orderbook_stream(depth=1, symbol=os.environ['SYM_BYBIT'], callback=handle_message)

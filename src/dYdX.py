@@ -29,7 +29,7 @@ private_client = Client(
 account_response = private_client.private.get_account()
 position_id = account_response.data['account']['positionId']
 
-security_name = "NEAR-USD"  ##Change Market Pair Here
+security_name = os.environ['SYM_DYDX']  ##Change Market Pair Here
 size = 1  ##Change Market size here
 pct_spread = 0.1  ##Change spread charged here
 

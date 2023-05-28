@@ -44,4 +44,4 @@ def calculate():
                             'diff': "{:.3f}".format(diff_price)}, index=[0])
 
     df = pd.concat([df, new_row], ignore_index=True)
-    df.to_csv('diff.csv', index=False)
+    df.to_csv('./share/diff.csv', index=False)
