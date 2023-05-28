@@ -1,4 +1,5 @@
 # Dependencies
+import datetime
 import os
 
 import websocket, json, time
@@ -6,7 +7,6 @@ from sortedcontainers import SortedDict
 from decimal import Decimal
 from web3 import Web3
 import pandas as pd
-
 
 # dYdX dependencies
 from dydx3 import Client
@@ -32,8 +32,8 @@ size = 1  ##Change Market size here
 pct_spread = 0.1  ##Change spread charged here
 
 dicts = {}
-dicts['bids'] = {} # bye
-dicts['asks'] = {} # sell
+dicts['bids'] = {}  # bye
+dicts['asks'] = {}  # sell
 
 offsets = {}
 
@@ -43,6 +43,7 @@ ask_order_id = 0
 position_balance_id = 0  # order id of postion clearing trade
 
 old_best_bid = None;
+
 
 def parse_message(msg_):
     global dicts, offsets
@@ -85,7 +86,6 @@ def parse_message(msg_):
 
 def run_script():
     def on_open(ws):
-        print("opened")
         channel_data = {"type": "subscribe", "channel": "v3_orderbook", "id": str(security_name),
                         "includeOffsets": "True"}
         ws.send(json.dumps(channel_data))
@@ -98,14 +98,9 @@ def run_script():
 
         best_bid = max(dicts["bids"].keys())
 
-
         if best_bid != old_best_bid:
-            print(" bid " + str(best_bid))
+            print(str(datetime.datetime.now()) + ": " + str(best_bid))
             old_best_bid = best_bid
-
-
-
-
 
     def on_close(ws):
         print("### closed ###")
