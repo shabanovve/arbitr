@@ -14,6 +14,8 @@ from dydx3.constants import *
 from dydx3.constants import POSITION_STATUS_OPEN
 from decimal import Decimal
 
+from src.common import handle_dydx
+
 ETHEREUM_ADDRESS = os.environ['ETHEREUM_ADDRESS']
 private_client = Client(
     host='https://api.dydx.exchange',
@@ -96,11 +98,12 @@ def run_script():
         obj = json.loads(message)
         parse_message(obj)
 
-        best_bid = max(dicts["bids"].keys())
+        best_bid = float(max(dicts["bids"].keys()))
 
         if best_bid != old_best_bid:
-            print(str(datetime.datetime.now()) + ": " + str(best_bid))
+            print("dydx: " + str(datetime.datetime.now()) + ": " + str(best_bid))
             old_best_bid = best_bid
+            handle_dydx(best_bid)
 
     def on_close(ws):
         print("### closed ###")
@@ -109,10 +112,3 @@ def run_script():
     ws = websocket.WebSocketApp(socket, on_open=on_open, on_message=on_message, on_close=on_close)
     ws.run_forever()
 
-
-if __name__ == "__main__":
-    try:
-        run_script()
-    except Exception as err:
-        print(err)
-        print("connect failed")
