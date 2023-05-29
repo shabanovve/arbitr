@@ -1,18 +1,9 @@
-# Dependencies
-import datetime
+import json
 import os
-
-import websocket, json, time
-from sortedcontainers import SortedDict
 from decimal import Decimal
-from web3 import Web3
-import pandas as pd
 
-# dYdX dependencies
+import websocket
 from dydx3 import Client
-from dydx3.constants import *
-from dydx3.constants import POSITION_STATUS_OPEN
-from decimal import Decimal
 
 from src.common import handle_dydx
 
@@ -29,13 +20,11 @@ private_client = Client(
 account_response = private_client.private.get_account()
 position_id = account_response.data['account']['positionId']
 
-security_name = os.environ['SYM_DYDX']  ##Change Market Pair Here
-size = 1  ##Change Market size here
-pct_spread = 0.1  ##Change spread charged here
+security_name = os.environ['SYM_DYDX']  # Change Market Pair Here
+size = 1  # Change Market size here
+pct_spread = 0.1  # Change spread charged here
 
-dicts = {}
-dicts['bids'] = {}  # bye
-dicts['asks'] = {}  # sell
+dicts = {'bids': {}, 'asks': {}}
 
 offsets = {}
 
@@ -44,7 +33,7 @@ bid_order_id = 0
 ask_order_id = 0
 position_balance_id = 0  # order id of postion clearing trade
 
-old_best_bid = None;
+old_best_bid = None
 
 
 def parse_message(msg_):
@@ -53,10 +42,10 @@ def parse_message(msg_):
     if msg_["type"] == "subscribed":
         for side, data in msg_['contents'].items():
             for entry in data:
-                size = Decimal(entry['size'])
-                if size > 0:
+                size_ = Decimal(entry['size'])
+                if size_ > 0:
                     price = Decimal(entry['price'])
-                    dicts[str(side)][price] = size
+                    dicts[str(side)][price] = size_
 
                     offset = Decimal(entry["offset"])
                     offsets[price] = offset
@@ -98,10 +87,10 @@ def run_script():
         obj = json.loads(message)
         parse_message(obj)
 
-        best_bid = float(max(dicts["bids"].keys()))
+        prices = dicts["asks"].keys()
+        best_bid = float(list(prices)[2])
 
         if best_bid != old_best_bid:
-            print("dydx: " + str(datetime.datetime.now()) + ": " + str(best_bid))
             old_best_bid = best_bid
             handle_dydx(best_bid)
 
@@ -111,4 +100,3 @@ def run_script():
     socket = "wss://api.dydx.exchange/v3/ws"
     ws = websocket.WebSocketApp(socket, on_open=on_open, on_message=on_message, on_close=on_close)
     ws.run_forever()
-
