@@ -13,7 +13,7 @@ df = pd.DataFrame()
 
 
 def synchronized(wrapped):
-    lock = threading.Lock()
+    lock = threading.RLock()
 
     @functools.wraps(wrapped)
     def _wrap(*args, **kwargs):
@@ -24,14 +24,13 @@ def synchronized(wrapped):
     return _wrap
 
 
-@synchronized
 def handle_dydx(price):
     global dydx_price
     dydx_price = price
-    calculate()
+    if (bybit_price is not None) & (dydx_price is not None):
+        calculate()
 
 
-@synchronized
 def handle_bybit(price):
     global bybit_price
     bybit_price = price
@@ -39,6 +38,7 @@ def handle_bybit(price):
         calculate()
 
 
+@synchronized
 def calculate():
     global df, dydx_price, bybit_price
 
